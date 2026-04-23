@@ -78,28 +78,29 @@ const TrailerModal = ({ isOpen, onClose, videoId }) => {
             style={{
               width: '100%',
               maxWidth: '1200px',
-              aspectRatio: '16/9',
+              position: 'relative',
               borderRadius: '16px',
               overflow: 'hidden',
-              boxShadow: '0 20px 50px rgba(0,0,0,0.5), 0 0 100px rgba(255,255,255,0.1)',
-              position: 'relative'
+              boxShadow: '0 20px 50px rgba(0,0,0,0.5), 0 0 100px rgba(255,255,255,0.1)'
             }}
           >
-            <div className="ambient-glow" style={{ 
-              top: '50%', left: '50%', transform: 'translate(-50%, -50%)', 
-              width: '100%', height: '100%', background: 'rgba(255,255,255,0.1)', zIndex: -1 
-            }}></div>
-            <iframe
-              src={`https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1`}
-              style={{
-                width: '100%',
-                height: '100%',
-                border: 'none'
-              }}
-              allow="autoplay; encrypted-media; fullscreen"
-              title="Wren Films Video"
-              allowFullScreen
-            />
+            {/* Responsive 16:9 Container */}
+            <div style={{ position: 'relative', width: '100%', paddingTop: '56.25%', backgroundColor: '#000' }}>
+              <iframe
+                src={`https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1`}
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                  border: 'none'
+                }}
+                allow="autoplay; encrypted-media; fullscreen"
+                title="Wren Films Video"
+                allowFullScreen
+              />
+            </div>
           </motion.div>
         </motion.div>
       )}

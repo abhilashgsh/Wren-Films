@@ -154,8 +154,10 @@ const AboutFilmSection = () => {
             )}
             
             <AnimatePresence mode="wait">
-              <motion.div
+              <motion.img
                 key={currentFrame}
+                src={FRAMES[currentFrame]}
+                alt="Film Scene"
                 initial={{ opacity: 0, scale: 1.05 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0 }}
@@ -166,9 +168,8 @@ const AboutFilmSection = () => {
                   left: 0,
                   width: '100%',
                   height: '100%',
-                  backgroundImage: `url(${FRAMES[currentFrame]})`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
+                  objectFit: 'cover',
+                  objectPosition: isMobile ? 'center 20%' : 'center center',
                   filter: 'contrast(1.1) brightness(0.8)',
                   willChange: 'opacity, transform'
                 }}

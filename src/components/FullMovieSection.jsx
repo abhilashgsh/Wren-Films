@@ -91,7 +91,7 @@ const FullMovieSection = () => {
           <div 
             style={{
               width: '100%',
-              aspectRatio: '16/9',
+              paddingTop: '56.25%', // Responsive 16:9 ratio
               borderRadius: '18px',
               overflow: 'hidden',
               backgroundColor: '#000',
