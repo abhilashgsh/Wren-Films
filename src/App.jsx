@@ -18,22 +18,29 @@ function App() {
   const audioRef = useRef(null);
 
   useEffect(() => {
-    // Initialize Lenis for smooth scrolling
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // smooth easing
-      direction: 'vertical',
-      gestureDirection: 'vertical',
-      smooth: true,
-      smoothTouch: true,
-      touchMultiplier: 2,
-    });
+    // Check if device supports touch or is mobile
+    const checkTouch = () => {
+      return window.innerWidth <= 768 || (('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0));
+    };
 
-    function raf(time) {
-      lenis.raf(time);
+    const isMobile = checkTouch();
+    let lenis;
+
+    // Only initialize Lenis for smooth scrolling on desktop devices
+    if (!isMobile) {
+      lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        smooth: true,
+        smoothTouch: false, // Explicitly disable touch hijacking
+      });
+
+      function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+      }
       requestAnimationFrame(raf);
     }
-    requestAnimationFrame(raf);
 
     // Simulate cinematic loading
     const timer = setTimeout(() => {
@@ -42,7 +49,7 @@ function App() {
 
     return () => {
       clearTimeout(timer);
-      lenis.destroy();
+      if (lenis) lenis.destroy();
     };
   }, []);
 

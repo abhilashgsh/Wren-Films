@@ -88,14 +88,33 @@ const FullMovieSection = () => {
             }}
           />
 
-          <div style={{
-            width: '100%',
-            aspectRatio: '16/9',
-            borderRadius: '18px',
-            overflow: 'hidden',
-            backgroundColor: '#000',
-            position: 'relative'
-          }}>
+          <div 
+            style={{
+              width: '100%',
+              aspectRatio: '16/9',
+              borderRadius: '18px',
+              overflow: 'hidden',
+              backgroundColor: '#000',
+              position: 'relative'
+            }}
+            onClick={(e) => {
+              // Enable pointer events on iframe after first tap to allow interaction without scroll locking initially
+              const iframe = e.currentTarget.querySelector('iframe');
+              if (iframe) iframe.style.pointerEvents = 'auto';
+              const overlay = e.currentTarget.querySelector('.video-overlay');
+              if (overlay) overlay.style.display = 'none';
+            }}
+          >
+            {/* Overlay to prevent scroll hijack on touch */}
+            <div 
+              className="video-overlay"
+              style={{
+                position: 'absolute',
+                top: 0, left: 0, width: '100%', height: '100%',
+                zIndex: 10,
+                cursor: 'pointer'
+              }}
+            />
             <iframe
               src="https://www.youtube.com/embed/Q7QrpGkwedg?rel=0&modestbranding=1"
               style={{
@@ -104,7 +123,8 @@ const FullMovieSection = () => {
                 border: 'none',
                 position: 'absolute',
                 top: 0,
-                left: 0
+                left: 0,
+                pointerEvents: 'none' // Prevent scroll locking
               }}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
