@@ -1,12 +1,23 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 const FullMovieSection = () => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   return (
     <section id="full-movie" className="section-padding" style={{ position: 'relative', overflow: 'hidden' }}>
       {/* Blurred moving film frames background */}
       <motion.div
-        animate={{ 
+        animate={isMobile ? {} : { 
           x: ['-5%', '0%', '-5%'],
           y: ['0%', '-5%', '0%'],
           scale: [1.1, 1.15, 1.1]
@@ -18,8 +29,9 @@ const FullMovieSection = () => {
           backgroundImage: 'url(https://img.youtube.com/vi/Q7QrpGkwedg/maxresdefault.jpg)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          filter: 'blur(30px) brightness(0.3) contrast(1.2)',
-          zIndex: 0
+          filter: isMobile ? 'blur(20px) brightness(0.2)' : 'blur(30px) brightness(0.3) contrast(1.2)',
+          zIndex: 0,
+          willChange: 'transform'
         }}
       />
       <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.6)', zIndex: 0 }} />
@@ -96,6 +108,7 @@ const FullMovieSection = () => {
               }}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
+              loading="lazy"
               title="Wren Films Full Movie"
             />
           </div>

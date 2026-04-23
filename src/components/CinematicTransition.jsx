@@ -1,7 +1,16 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 const CinematicTransition = ({ frameUrl }) => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   return (
     <div style={{ position: 'relative', width: '100%', height: '30vh', overflow: 'hidden', background: '#000' }}>
       <motion.div
@@ -15,8 +24,9 @@ const CinematicTransition = ({ frameUrl }) => {
           backgroundImage: `url(${frameUrl})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          backgroundAttachment: 'fixed',
-          filter: 'blur(3px) grayscale(50%)'
+          backgroundAttachment: isMobile ? 'scroll' : 'fixed',
+          filter: 'blur(3px) grayscale(50%)',
+          willChange: 'opacity'
         }}
       />
       <div style={{

@@ -46,7 +46,8 @@ const MoreFilmsSection = () => {
               maxWidth: '350px',
               flex: '0 0 auto',
               scrollSnapAlign: 'start',
-              position: 'relative'
+              position: 'relative',
+              willChange: 'transform, opacity'
             }}
             className="hoverable"
           >

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Lenis from 'lenis';
 import { Volume2, VolumeX } from 'lucide-react';
 import HeroSection from './components/HeroSection';
 import AboutFilmSection from './components/AboutFilmSection';
@@ -17,11 +18,32 @@ function App() {
   const audioRef = useRef(null);
 
   useEffect(() => {
+    // Initialize Lenis for smooth scrolling
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // smooth easing
+      direction: 'vertical',
+      gestureDirection: 'vertical',
+      smooth: true,
+      smoothTouch: true,
+      touchMultiplier: 2,
+    });
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
     // Simulate cinematic loading
     const timer = setTimeout(() => {
       setLoading(false);
     }, 3500);
-    return () => clearTimeout(timer);
+
+    return () => {
+      clearTimeout(timer);
+      lenis.destroy();
+    };
   }, []);
 
   const toggleAudio = () => {

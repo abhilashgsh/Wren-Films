@@ -3,8 +3,21 @@ import React, { useEffect, useState } from 'react';
 const CustomCursor = () => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
 
   useEffect(() => {
+    // Check if device supports touch
+    const checkTouch = () => {
+      return (('ontouchstart' in window) ||
+         (navigator.maxTouchPoints > 0) ||
+         (navigator.msMaxTouchPoints > 0));
+    };
+
+    if (checkTouch() || window.innerWidth <= 768) {
+      setIsTouchDevice(true);
+      return; // Disable entirely on mobile
+    }
+
     const onMouseMove = (e) => {
       setPosition({ x: e.clientX, y: e.clientY });
     };
@@ -33,6 +46,8 @@ const CustomCursor = () => {
       window.removeEventListener('mouseover', onMouseOver);
     };
   }, []);
+
+  if (isTouchDevice) return null;
 
   return (
     <div
